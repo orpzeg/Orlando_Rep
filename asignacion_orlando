@@ -9,6 +9,9 @@ cadena_larga_tests.py
 
 En ese archivo estaran los tests unitarios.
 
+-Crear archivo xml Junit 
+
+
 import unittest
 
 
