@@ -1,0 +1,11 @@
+Tarea:
+
+Escribir Tests Unitarios usando PythonTest https://docs.python.org/3/library/unittest.html
+
+Sobre la funcion de cadena mas larga.
+
+Crear un archivo llamado 
+cadena_larga_tests.py
+
+En ese archivo estaran los tests unitarios.
+
