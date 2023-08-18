@@ -17,3 +17,9 @@ file.getData() => [ {
 		}
 ]
 
+Uso:
+
+directoryScanner = DirectoryScanner(path_dir)
+for(fileInfo in directoryScanner.getFiles()) {
+	print(fileInfo.getData()['Size'])
+}
