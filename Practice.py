@@ -1,5 +1,5 @@
 import unittest
-
+import xmlrunner
 
 def first_longest_common(string_one, string_two):
     longest_substring = []
@@ -50,4 +50,5 @@ class TestFirstLongestCommon(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    with open('Practice_xml_output.xml', 'w') as output:
+        unittest.main(testRunner=xmlrunner.XMLTestRunner(output=output))
