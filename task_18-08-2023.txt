@@ -1,0 +1,19 @@
+Crear dos clases:
+-DirectoryScanner
+-FileInformation
+
+Specs:
+
+directoryScanner = DirectoryScanner("c:\directorio")
+for (file in directoryScanner.getFiles()):
+	print(file)
+
+directoryScanner.getFiles() ==> List[FileInformation("aaa.dll"), FileInformation("abc.dll")]
+
+file.getData() => [ {
+			NameFile: 'aaa.dll'
+			size: 2023
+			version: '2.3.2.3'
+		}
+]
+
