@@ -1,6 +1,8 @@
 import os
 import time
 import win32api
+import win32com
+import win32com.client
 
 class DirectoryScanner:
     def __init__(self, directory):
@@ -20,6 +22,9 @@ class FileInformation:
         self.filename = os.path.basename(filepath)
 
     def getData(self):
+        shell = win32com.client.Dispatch("Shell.Application")
+        namespace = shell.Namespace(os.path.dirname(self.filepath))
+        item = namespace.ParseName(os.path.basename(self.filepath))
         try:
             author = win32api.GetFileVersionInfo(self.filepath, '\\StringFileInfo\\040601b0\\Author')
             tags = win32api.GetFileVersionInfo(self.filepath, '\\StringFileInfo\\040601b0\\Tags')
@@ -34,14 +39,17 @@ class FileInformation:
             'File type': 'Directory' if os.path.isdir(self.filepath) else os.path.splitext(self.filename)[1],
             'Author': author,
             'Tags': tags,
-            'Title': title
+            'Title': title,
+            'File description': namespace.GetDetailsOf(item, 34),
+            'Product name': namespace.GetDetailsOf(item, 297),
+            'Product version': namespace.GetDetailsOf(item, 298),
+            'Copyright': namespace.GetDetailsOf(item, 25)
         }
         return properties
 
-directoryScanner = DirectoryScanner('D:\\Proyectos Python')
+directoryScanner = DirectoryScanner('C:\\Program Files\\JetBrains\\PyCharm Community Edition 2023.1.4\\bin')
 for file in directoryScanner.getFiles():
     print(file)
 
 for fileInfo in directoryScanner.getFiles():
-    print(fileInfo['Size'])
-
+    print(fileInfo['Name'])
