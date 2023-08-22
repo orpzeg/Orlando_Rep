@@ -23,3 +23,16 @@ directoryScanner = DirectoryScanner(path_dir)
 for(fileInfo in directoryScanner.getFiles()) {
 	print(fileInfo.getData()['Size'])
 }
+
+2.- El directorio debe ser relativo:
+Ejemplo si el directorio de entrada era c:\windows\system32 y se encuentra un archivo en c:\windows\system32\gatito\lorito\gato.dll
+
+entonces el directorio debe almacenar el directorio relativo:
+El resultado debe ser:
+-gatito\lorito\gato.dll 
+y no asi:
+-c:\windows\system32\gatito\lorito\gato.dll
+
+Crear una BD en JSON para almacenar esta informacion. El script que sube la informacion a la Base de datos debe soportar --jobid="aaa" y --version="aaa"
+
+
