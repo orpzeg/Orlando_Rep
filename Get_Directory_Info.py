@@ -12,12 +12,12 @@ class DirectoryScanner:
 
     def getFiles(self):
         file_list = []
-        for filename in os.listdir(self.directory):
-            filepath = os.path.join(self.directory, filename)
-            file_info = FileInformation(filepath)
-            file_list.append(file_info.getData())
+        for dirpath, dirnames, filenames in os.walk(self.directory):
+            for filename in filenames:
+                filepath = os.path.join(dirpath, filename)
+                file_info = FileInformation(filepath)
+                file_list.append(file_info.getData())
         return file_list
-
 
 class FileInformation:
     def __init__(self, filepath):
@@ -39,7 +39,7 @@ class FileInformation:
             'Size': os.path.getsize(self.filepath),
             'Date modified': time.ctime(os.path.getmtime(self.filepath)),
             'Date created': time.ctime(os.path.getctime(self.filepath)),
-            'File type': 'Directory' if os.path.isdir(self.filepath) else os.path.splitext(self.filename)[1],
+            'File type': os.path.splitext(self.filename)[1],
             'Author': author,
             'Tags': tags,
             'Title': title,
