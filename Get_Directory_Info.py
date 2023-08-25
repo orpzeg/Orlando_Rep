@@ -15,12 +15,13 @@ class DirectoryScanner:
         for dirpath, dirnames, filenames in os.walk(self.directory):
             for filename in filenames:
                 filepath = os.path.join(dirpath, filename)
-                file_info = FileInformation(filepath)
+                file_info = FileInformation(self.directory, filepath)
                 file_list.append(file_info.getData())
         return file_list
 
 class FileInformation:
-    def __init__(self, filepath):
+    def __init__(self, base_directory, filepath):
+        self.base_directory = base_directory
         self.filepath = filepath
         self.filename = os.path.basename(filepath)
 
@@ -28,6 +29,7 @@ class FileInformation:
         shell = win32com.client.Dispatch('Shell.Application')
         namespace = shell.Namespace(os.path.dirname(self.filepath))
         item = namespace.ParseName(os.path.basename(self.filepath))
+        partial_filepath = self.filepath.replace(self.base_directory, '', 1).lstrip('\\')
         try:
             author = win32api.GetFileVersionInfo(self.filepath, '\\StringFileInfo\\040601b0\\Author')
             tags = win32api.GetFileVersionInfo(self.filepath, '\\StringFileInfo\\040601b0\\Tags')
@@ -46,7 +48,8 @@ class FileInformation:
             'File description': namespace.GetDetailsOf(item, 34),
             'Product name': namespace.GetDetailsOf(item, 297),
             'Product version': namespace.GetDetailsOf(item, 298),
-            'Copyright': namespace.GetDetailsOf(item, 25)
+            'Copyright': namespace.GetDetailsOf(item, 25),
+            'Filepath': partial_filepath
         }
         return properties
 
