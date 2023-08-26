@@ -5,6 +5,7 @@ import win32com
 import win32com.client
 import argparse
 import json
+from pymongo import MongoClient
 
 class DirectoryScanner:
     def __init__(self, directory):
@@ -57,6 +58,9 @@ def main():
     parser = argparse.ArgumentParser(description='Scan a directory and retrieve the file information.')
     parser.add_argument('--directory', type=str, help='Path to the directory to be scanned.')
     parser.add_argument('--output', type=str, help='Path to the output JSON file')
+    parser.add_argument('--db_name', type=str, help='Name of the MongoDB database')
+    parser.add_argument('--collection_name', type=str, help='Name of the MongoDB collection')
+    parser.add_argument('--connection_string', type=str, default='mongodb://localhost:27017/', help='connection string MongDB')
 
     args = parser.parse_args()
 
@@ -65,6 +69,13 @@ def main():
 
     with open(args.output, 'w', encoding='utf-8') as f:
         json.dump(files_info, f, ensure_ascii=False, indent=4)
+
+    client = MongoClient(args.connection_string)
+
+    db = client[args.db_name]
+    collection = db[args.collection_name]
+
+    collection.insert_many(directoryScanner.getFiles())
 
 if __name__ == '__main__':
     main()
